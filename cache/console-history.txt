@@ -1,0 +1,2 @@
+.exit
+const registry = await ethers.getContractAt("PipelineRegistry", "YOUR_PIPELINE_REGISTRY_ADDRESS")
