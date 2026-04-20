@@ -1,0 +1,28 @@
+{
+  "name": "blockchain-cicd-integrity",
+  "version": "1.0.0",
+  "description": "Blockchain-based CI/CD pipeline integrity system",
+  "author": "Your Name",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "compile":        "hardhat compile",
+    "test":           "hardhat test",
+    "test:gas": "set REPORT_GAS=true && hardhat test",
+    "deploy:local":   "hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "node":           "hardhat node",
+    "clean":          "hardhat clean",
+    "verify":         "hardhat run scripts/verify.js --network sepolia",
+    "lint":           "solhint 'contracts/**/*.sol'"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "hardhat": "^2.19.4",
+    "solhint": "^4.1.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.0"
+  }
+}

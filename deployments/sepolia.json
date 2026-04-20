@@ -1,0 +1,10 @@
+{
+  "network": "sepolia",
+  "deployedAt": "2026-04-19T23:38:56.251Z",
+  "deployer": "0x2f0E77A695A5792162B8661c52E762403191c1A3",
+  "pipelineRegistryAddress": "0x0F2605F7C8059CD120a6598a701DB84115d01321",
+  "eventLoggerAddress": "0x7fDD094cFAe6A992F5418b710bC65E0f7CD373F2",
+  "verifierAddress": "0x760155b4C40108D2bE08859CFF2a3568aA6B5F0D",
+  "initialPipelineId": "1",
+  "initialConfigHash": "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+}

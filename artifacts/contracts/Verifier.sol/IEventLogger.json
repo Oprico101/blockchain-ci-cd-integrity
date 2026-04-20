@@ -1,0 +1,60 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IEventLogger",
+  "sourceName": "contracts/Verifier.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "pipelineId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "runId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum IEventLogger.Stage",
+          "name": "stage",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "configHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "commitHash",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "actor",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "notes",
+          "type": "string"
+        }
+      ],
+      "name": "logEvent",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "logId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

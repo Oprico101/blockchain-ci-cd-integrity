@@ -1,0 +1,33 @@
+# ─────────────────────────────────────────────────────────────────
+#  .gitignore — blockchain-cicd-integrity
+# ─────────────────────────────────────────────────────────────────
+
+# ── Environment variables — NEVER commit these ────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Node modules ──────────────────────────────────────────────────
+node_modules/
+dashboard/node_modules/
+
+# ── Hardhat build output ──────────────────────────────────────────
+artifacts/
+cache/
+typechain-types/
+
+# ── Gas report ────────────────────────────────────────────────────
+gas-report.txt
+
+# ── OS files ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Editor files ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+
+# ── Coverage reports ──────────────────────────────────────────────
+coverage/
+coverage.json
