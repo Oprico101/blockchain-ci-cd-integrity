@@ -58,11 +58,11 @@ jobs:
     steps:
       # ── 1. Checkout ────────────────────────────────────────────────────────
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       # ── 2. Setup Node.js ───────────────────────────────────────────────────
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -129,7 +129,7 @@ jobs:
       # ── 10. Upload test artifacts ─────────────────────────────────────────
       - name: Upload gas report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: gas-report
           path: gas-report.txt
@@ -160,10 +160,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -234,10 +234,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
