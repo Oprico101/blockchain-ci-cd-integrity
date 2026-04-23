@@ -155,3 +155,28 @@ const CONFIG = {
 };
 
 module.exports = CONFIG;
+const addresses = loadAddresses();
+
+const CONFIG = {
+  network:       NETWORK,
+  rpcUrl:        RPC_URL,
+  botPrivateKey: BOT_PRIVATE_KEY,
+  pipelineId:    PIPELINE_ID,
+
+  addresses: {
+    pipelineRegistry: addresses.pipelineRegistry,
+    eventLogger:      addresses.eventLogger,
+    verifier:         addresses.verifier,
+  },
+
+  // ABIs loaded lazily so missing artifacts don't crash on import
+  get abis() {
+    return {
+      pipelineRegistry: loadAbi("PipelineRegistry"),
+      eventLogger:      loadAbi("EventLogger"),
+      verifier:         loadAbi("Verifier"),
+    };
+  },
+};
+
+module.exports = CONFIG;

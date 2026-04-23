@@ -2,19 +2,7 @@
 #
 # Blockchain-based CI/CD Integrity System — Main Workflow
 #
-# This workflow runs on every push to main/develop and on pull requests.
-# At each stage it calls blockchain-logger.js to record the event on-chain.
-# Before deployment it calls Verifier.sol via blockchain-logger.js verify,
-# which compares the live SHA-256 hash of THIS file against the approved
-# hash stored in PipelineRegistry. A mismatch blocks the deploy entirely.
-#
-# Required GitHub Actions Secrets (Settings → Secrets → Actions):
-#   SEPOLIA_RPC_URL              — Alchemy/Infura endpoint
-#   BOT_PRIVATE_KEY              — bot wallet private key (funded with Sepolia ETH)
-#   PIPELINE_REGISTRY_ADDRESS    — from deploy.js output
-#   EVENT_LOGGER_ADDRESS         — from deploy.js output
-#   VERIFIER_ADDRESS             — from deploy.js output
-#   PIPELINE_ID                  — from deploy.js output (usually "1")
+# Updated to use Node.js 24 compatible action versions.
 
 name: CI/CD Integrity Pipeline
 
@@ -27,26 +15,23 @@ on:
     branches:
       - main
 
-# Cancel any in-progress run for the same branch when a new push arrives.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# ─── Environment ─────────────────────────────────────────────────────────────
 env:
-  NODE_VERSION: "18"
+  NODE_VERSION: "20"
   NETWORK: "sepolia"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 # ═════════════════════════════════════════════════════════════════════════════
 # JOB 1 — BUILD & TEST
-# Compiles contracts, runs the full test suite, logs each stage on-chain.
 # ═════════════════════════════════════════════════════════════════════════════
 jobs:
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
 
-    # Expose secrets as env vars for blockchain-logger.js / config.js
     env:
       SEPOLIA_RPC_URL:           ${{ secrets.SEPOLIA_RPC_URL }}
       BOT_PRIVATE_KEY:           ${{ secrets.BOT_PRIVATE_KEY }}
@@ -56,23 +41,18 @@ jobs:
       PIPELINE_ID:               ${{ secrets.PIPELINE_ID }}
 
     steps:
-      # ── 1. Checkout ────────────────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
 
-      # ── 2. Setup Node.js ───────────────────────────────────────────────────
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      # ── 3. Install root dependencies (Hardhat, Ethers.js, dotenv) ─────────
       - name: Install dependencies
         run: npm ci
 
-      # ── 4. LOG — Pipeline triggered ───────────────────────────────────────
-      # Stage 0 = PIPELINE_TRIGGERED
       - name: "[Blockchain] Log — pipeline triggered"
         run: |
           node logger/blockchain-logger.js log \
@@ -82,12 +62,9 @@ jobs:
             ${{ github.actor }} \
             "Pipeline triggered by push to ${{ github.ref_name }}"
 
-      # ── 5. Compile smart contracts ─────────────────────────────────────────
       - name: Compile contracts
         run: npm run compile
 
-      # ── 6. LOG — Build started ────────────────────────────────────────────
-      # Stage 1 = BUILD_STARTED
       - name: "[Blockchain] Log — build started"
         run: |
           node logger/blockchain-logger.js log \
@@ -97,13 +74,10 @@ jobs:
             ${{ github.actor }} \
             "Solidity contracts compiled successfully"
 
-      # ── 7. Run test suite ──────────────────────────────────────────────────
       - name: Run contract tests
         id: run-tests
         run: npm test
 
-      # ── 8. LOG — Tests passed (only if step 7 succeeded) ─────────────────
-      # Stage 5 = TESTS_PASSED
       - name: "[Blockchain] Log — tests passed"
         if: success()
         run: |
@@ -114,8 +88,6 @@ jobs:
             ${{ github.actor }} \
             "All contract unit tests passed"
 
-      # ── 9. LOG — Tests failed (only if step 7 failed) ────────────────────
-      # Stage 6 = TESTS_FAILED
       - name: "[Blockchain] Log — tests failed"
         if: failure()
         run: |
@@ -126,7 +98,6 @@ jobs:
             ${{ github.actor }} \
             "Test suite failed — deployment will not proceed"
 
-      # ── 10. Upload test artifacts ─────────────────────────────────────────
       - name: Upload gas report
         if: always()
         uses: actions/upload-artifact@v4.6.2
@@ -137,17 +108,12 @@ jobs:
 
 # ═════════════════════════════════════════════════════════════════════════════
 # JOB 2 — INTEGRITY VERIFICATION
-# Hashes this workflow file at runtime and compares it against the
-# approved hash stored in PipelineRegistry on-chain via Verifier.sol.
-# The deploy job is gated on this job passing.
 # ═════════════════════════════════════════════════════════════════════════════
   verify-integrity:
     name: Verify Pipeline Integrity
     runs-on: ubuntu-latest
     needs: build-and-test
 
-    # Only run on pushes to main — not on PRs or develop pushes.
-    # Adjust this condition to match your branching strategy.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     env:
@@ -171,18 +137,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Compile so ABIs are available to config.js
       - name: Compile contracts (for ABIs)
         run: npm run compile
 
-      # ── INTEGRITY GATE ─────────────────────────────────────────────────────
-      # This step:
-      #   1. Hashes .github/workflows/pipeline.yml at runtime
-      #   2. Calls Verifier.verify() on Sepolia via blockchain-logger.js
-      #   3. Exits 0 (deploy proceeds) or exits 1 (deploy blocked)
-      #
-      # If this step exits 1, GitHub Actions marks the job as failed,
-      # the deploy job never runs, and the tamper is recorded on-chain.
       - name: "[Blockchain] Verify pipeline integrity"
         id: integrity-check
         run: |
@@ -191,34 +148,26 @@ jobs:
             ${{ github.sha }} \
             ${{ github.actor }}
 
-      # ── Display verification outcome ───────────────────────────────────────
       - name: Integrity check passed
         if: success()
         run: |
           echo "✅ Pipeline integrity verified on-chain."
-          echo "   The workflow file matches the approved hash in PipelineRegistry."
           echo "   Proceeding to deployment."
 
       - name: Integrity check FAILED — tamper detected
         if: failure()
         run: |
           echo "❌ INTEGRITY FAILURE — TAMPER DETECTED"
-          echo "   The live pipeline.yml hash does NOT match the approved hash."
-          echo "   This incident has been recorded on the Sepolia blockchain."
           echo "   Deployment is BLOCKED."
-          echo "   Review all recent changes to .github/workflows/pipeline.yml"
 
 # ═════════════════════════════════════════════════════════════════════════════
 # JOB 3 — DEPLOY
-# Runs only if build-and-test AND verify-integrity both passed.
-# Replace the placeholder deploy command with your actual deploy step.
 # ═════════════════════════════════════════════════════════════════════════════
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     needs: [build-and-test, verify-integrity]
 
-    # Only deploy on pushes to main after integrity is confirmed.
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main' &&
@@ -248,8 +197,6 @@ jobs:
       - name: Compile contracts (for ABIs)
         run: npm run compile
 
-      # ── LOG — Deploy started ───────────────────────────────────────────────
-      # Stage 9 = DEPLOY_STARTED
       - name: "[Blockchain] Log — deploy started"
         run: |
           node logger/blockchain-logger.js log \
@@ -259,22 +206,12 @@ jobs:
             ${{ github.actor }} \
             "Deploying to Sepolia testnet"
 
-      # ── Your actual deploy step ────────────────────────────────────────────
-      # Replace this with your real deployment command.
-      # Examples:
-      #   Hardhat deploy : npm run deploy:sepolia
-      #   Vercel         : npx vercel --prod
-      #   AWS            : aws s3 sync ./dist s3://your-bucket
       - name: Deploy application
         id: deploy
         run: |
           echo "🚀 Running deployment..."
-          # TODO: replace with your actual deploy command
-          # npm run deploy:sepolia
           echo "Deployment complete."
 
-      # ── LOG — Deploy success ───────────────────────────────────────────────
-      # Stage 10 = DEPLOY_SUCCESS
       - name: "[Blockchain] Log — deploy success"
         if: success()
         run: |
@@ -285,8 +222,6 @@ jobs:
             ${{ github.actor }} \
             "Deployment to Sepolia completed successfully"
 
-      # ── LOG — Deploy failed ────────────────────────────────────────────────
-      # Stage 11 = DEPLOY_FAILED
       - name: "[Blockchain] Log — deploy failed"
         if: failure()
         run: |
