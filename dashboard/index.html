@@ -3,9 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blockchain CI/CD Integrity Dashboard</title>
-    <meta name="description" content="Real-time audit dashboard for the Blockchain-based CI/CD Pipeline Integrity System" />
+
+    <!-- Primary Meta -->
+    <title>OPRICO ChainGuard — Blockchain CI/CD Integrity System</title>
+    <meta name="description" content="Real-time blockchain-based audit dashboard for CI/CD pipeline integrity verification on Ethereum Sepolia." />
+    <meta name="theme-color" content="#00F0B4" />
+
+    <!-- Favicon — inline SVG hex -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><polygon points='18,2 33,10 33,26 18,34 3,26 3,10' fill='none' stroke='%2300F0B4' stroke-width='2'/><circle cx='18' cy='18' r='5' fill='%2300F0B4'/></svg>" />
+
+    <!-- Google Fonts preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Base styles to prevent flash of unstyled content -->
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #080C14;
+        color: #E2E8F0;
+        min-height: 100vh;
+      }
+
+      /* Loading screen shown before React mounts */
+      #root:empty::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #080C14;
+      }
+
+      #root:empty::after {
+        content: 'INITIALISING CHAINGUARD...';
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Space Mono', monospace, system-ui;
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        color: #00F0B4;
+        animation: blink 1s ease infinite;
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.2; }
+      }
+    </style>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
