@@ -3,9 +3,14 @@ await registry.updateApprovedHash(1, "0x2aca9283823e1457288731d08d002896d6276d4f
 const registry = await ethers.getContractAt("PipelineRegistry", "0x0F2605F7C8059CD120a6598a701DB84115d01321")
 .exit
 await registry.updateApprovedHash(1, "0x2aca9283823e1457288731d08d002896d6276d4f7c468da129c352d63cf1fb91")
+const registry = await ethers.getContractAt("PipelineRegistry", "0x0F2605F7C8059CD120a6598a701DB84115d01321")
+.exit
+await registry.updateApprovedHash(1, "0x2aca9283823e1457288731d08d002896d6276d4f7c468da129c352d63cf1fb91")
 const registry = await ethers.getContractAt("PipelineRegistry", "0x2aca9283823e1457288731d08d002896d6276d4f7c468da129c352d63cf1fb91")
 await registry.updateApprovedHash(1, "0x2aca9283823e...")
 const registry = await ethers.getContractAt("PipelineRegistry", "YOUR_PIPELINE_REGISTRY_ADDRESS")
 const registry = await ethers.getContractAt("PipelineRegistry", "0x2aca9283823e1457288731d08d002896d6276d4f7c468da129c352d63cf1fb91")
+.exit
+const registry = await ethers.getContractAt("PipelineRegistry", "YOUR_PIPELINE_REGISTRY_ADDRESS")t ethers.getContractAt("PipelineRegistry", "0x2aca9283823e1457288731d08d002896d6276d4f7c468da129c352d63cf1fb91")
 .exit
 const registry = await ethers.getContractAt("PipelineRegistry", "YOUR_PIPELINE_REGISTRY_ADDRESS")
