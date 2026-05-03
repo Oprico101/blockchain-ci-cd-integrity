@@ -6,15 +6,15 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "compile":        "hardhat compile",
-    "test":           "hardhat test",
+    "compile": "hardhat compile",
+    "test": "hardhat test",
     "test:gas": "set REPORT_GAS=true && hardhat test",
-    "deploy:local":   "hardhat run scripts/deploy.js --network localhost",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
     "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
-    "node":           "hardhat node",
-    "clean":          "hardhat clean",
-    "verify":         "hardhat run scripts/verify.js --network sepolia",
-    "lint":           "solhint 'contracts/**/*.sol'"
+    "node": "hardhat node",
+    "clean": "hardhat clean",
+    "verify": "hardhat run scripts/verify.js --network sepolia",
+    "lint": "solhint 'contracts/**/*.sol'"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "ethers": "^6.9.0"
+    "ethers": "^6.9.0",
+    "oprico-chainguard-logger": "^1.0.0"
   }
 }

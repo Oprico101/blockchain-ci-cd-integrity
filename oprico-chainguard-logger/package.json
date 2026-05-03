@@ -1,0 +1,38 @@
+{
+  "name": "oprico-chainguard-logger",
+  "version": "1.0.0",
+  "description": "Blockchain-based CI/CD pipeline integrity logger. Records and verifies every pipeline event on the Ethereum blockchain.",
+  "author": "Oprico101",
+  "license": "MIT",
+  "main": "src/index.js",
+  "bin": {
+    "chainguard": "./bin/chainguard.js"
+  },
+  "keywords": [
+    "blockchain",
+    "cicd",
+    "integrity",
+    "ethereum",
+    "pipeline",
+    "security",
+    "devops",
+    "hardhat",
+    "solidity",
+    "sepolia"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Oprico101/blockchain-ci-cd-integrity"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.0",
+    "oprico-chainguard-logger": "^1.0.0"
+  },
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0"
+  }
+}
