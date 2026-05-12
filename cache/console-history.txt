@@ -1,4 +1,7 @@
 .exit
+await registry.updateApprovedHash(1, "0xa25503db410c1e5af2f58aea2991b305d6b603b2ee65410410e214c8bcc31c64")
+const registry = await ethers.getContractAt("PipelineRegistry", "0xf9e482fadc8e97a17011cf5e97bf3e432156c896ba4ca2e568f0e0bf7f4491f3")
+.exit
 await registry.updateApprovedHash(1, "0xabc123...")
 const registry = await ethers.getContractAt("PipelineRegistry", "0x0F2605F7C8059CD120a6598a701DB84115d01321")
 .exit

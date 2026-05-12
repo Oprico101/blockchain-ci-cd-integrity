@@ -22,7 +22,7 @@ concurrency:
 env:
   NODE_VERSION: "20" #tamper
   NETWORK: "sepolia"
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true" #tamper
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true" #tamperment
 
 # ═════════════════════════════════════════════════════════════════════════════
 # JOB 1 — BUILD & TEST
