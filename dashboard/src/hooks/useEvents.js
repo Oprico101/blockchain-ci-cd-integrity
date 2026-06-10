@@ -21,7 +21,7 @@ import { useState, useEffect, useCallback } from "react";
  */
 export const STAGE_LABELS = {
   0:  { label: "Pipeline triggered", color: "blue"   },
-  1:  { label: "Build started",      color: "blue"   },
+  1:  { label: "Build stardted",      color: "blue"   },
   2:  { label: "Build success",      color: "green"  },
   3:  { label: "Build failed",       color: "red"    },
   4:  { label: "Tests started",      color: "blue"   },
